@@ -21,6 +21,6 @@ function App() {
       <h2 className="time">It is {currentTime.toLocaleTimeString()}</h2>
     </div>
   );
-}
+}   
 
 export default App;
