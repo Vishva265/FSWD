@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal - Resume Upload</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Job Portal</h1>
+            <p>Upload your resume to get noticed by employers</p>
+        </header>
+        
+        <main>
+            <div class="upload-section">
+                <h2>Upload Your Resume</h2>
+                <p class="requirements">
+                    <strong>Requirements:</strong> PDF files only, maximum size 2MB
+                </p>
+                
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="resume">Select Resume (PDF)</label>
+                        <input 
+                            type="file" 
+                            id="resume" 
+                            name="resume" 
+                            accept=".pdf" 
+                            required
+                        >
+                        <div class="file-info">
+                            <span id="fileName">No file selected</span>
+                            <span id="fileSize"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            Upload Resume
+                        </button>
+                        <button type="reset" class="btn btn-secondary" id="clearBtn">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="message" class="message" style="display: none;"></div>
+                
+                <div id="uploadProgress" class="progress" style="display: none;">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+            
+            
+            <div class="info-section">
+                <h3>Why Upload Your Resume?</h3>
+                <ul>
+                    <li>Get noticed by top employers</li>
+                    <li>Apply to multiple jobs with one click</li>
+                    <li>Receive personalized job recommendations</li>
+                    <li>Track your application status</li>
+                    <li>Fast and easy application process</li>
+                </ul>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Job Portal. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

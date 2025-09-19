@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gym Rep Counter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f9f9f9;
+      margin: 0;
+    }
+    .counter-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 300px;
+    }
+    .counter {
+      font-size: 4rem;
+      margin: 1rem 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .inc { background: #4caf50; color: white; }
+    .dec { background: #f44336; color: white; }
+    .reset { background: #777; color: white; }
+  </style>
+</head>
+<body>
+  <div class="counter-container">
+    <h2>Rep Counter</h2>
+    <div class="counter" id="counter">0</div>
+    <div>
+      <button class="inc" onclick="updateCount(1)">+</button>
+      <button class="dec" onclick="updateCount(-1)">−</button>
+      <button class="reset" onclick="resetCount()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    async function fetchCount() {
+      const res = await fetch('/api/count');
+      const data = await res.json();
+      document.getElementById('counter').textContent = data.count;
+    }
+
+    async function updateCount(delta) {
+      const res = await fetch('/api/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ delta })
+      });
+      const data = await res.json();
+      document.getElementById('counter').textContent = data.count;
+    }
+
+    async function resetCount() {
+      const res = await fetch('/api/reset', { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('counter').textContent = data.count;
+    }
+
+    fetchCount();
+  </script>
+</body>
+</html>

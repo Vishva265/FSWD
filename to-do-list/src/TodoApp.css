@@ -24,13 +24,16 @@ body {
   font-size: 26px;
 }
 
-.input-section {
+/* Input Section */
+.input-section,
+.search-section {
   display: flex;
   gap: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
-.input-section input {
+.input-section input,
+.search-section input {
   flex: 1;
   padding: 12px;
   border: none;
@@ -55,6 +58,7 @@ body {
   background: #924ef0;
 }
 
+/* Task List */
 .task-list {
   display: flex;
   flex-direction: column;
@@ -71,6 +75,21 @@ body {
   align-items: center;
 }
 
+/* Strikethrough on completed task */
+.task-item span {
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.task-item span.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Icons */
 .task-item .icons {
   display: flex;
   gap: 12px;
@@ -80,4 +99,85 @@ body {
 
 .task-item .icons svg:hover {
   color: #f5c518;
+}
+
+/* Clear All Button */
+.clear-btn {
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-btn:hover {
+  background: #b71c1c;
+}
+
+/* No tasks message */
+.task-list p {
+  color: #bbb;
+  margin-top: 10px;
+}
+.task-text {
+  flex: 1;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-text.completed strong {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Task status badge */
+.status {
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  width: fit-content;
+  font-weight: bold;
+}
+
+.status.done {
+  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.15);
+}
+
+.status.pending {
+  color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0 20px;
+}
+
+.filter-buttons button {
+  padding: 6px 12px;
+  border: none;
+  background: #333;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.filter-buttons button:hover {
+  background: #555;
+}
+
+.filter-buttons .active {
+  background: #a362ea;
 }

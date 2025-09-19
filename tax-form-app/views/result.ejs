@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Total Income</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 50px; text-align: center; }
+    .box { display: inline-block; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    .box h3 { margin: 10px 0; }
+    a { display: inline-block; margin-top: 20px; text-decoration: none; color: #007bff; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Income Summary</h2>
+    <h3>Income Source 1: ₹<%= income1 %></h3>
+    <h3>Income Source 2: ₹<%= income2 %></h3>
+    <hr>
+    <h2>Total Income: ₹<%= totalIncome %></h2>
+    <a href="/">← Go back</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <h1>Library Portal</h1>
+            <h2>Welcome to the Library</h2>
+            <p>Please enter your name to access the portal</p>
+            
+            <% if (error) { %>
+                <div class="error-message">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/login" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="username">Your Name:</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your full name"
+                        required
+                        autofocus
+                    >
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    Enter Library Portal
+                </button>
+            </form>
+            
+            <div class="info">
+                <p>This portal tracks your library sessions and provides personalized access.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

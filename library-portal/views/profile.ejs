@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <div class="header">
+                <h1>Library Portal</h1>
+                <div class="user-welcome">
+                    <h2>Welcome, <%= user.name %>!</h2>
+                    <p>You are now logged into the Library Portal</p>
+                </div>
+            </div>
+            
+            <div class="session-info">
+                <h3>Your Session Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">User Name:</span>
+                        <span class="value"><%= user.name %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Login Time:</span>
+                        <span class="value"><%= user.loginTime %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Session Status:</span>
+                        <span class="value status-active">Active</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="portal-features">
+                <h3>Available Features</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h4>📚 Browse Books</h4>
+                        <p>Search and explore our extensive book collection</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📖 My Borrowed Books</h4>
+                        <p>View and manage your currently borrowed books</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔍 Search Catalog</h4>
+                        <p>Find books by title, author, or ISBN</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>⏰ Due Dates</h4>
+                        <p>Track return dates for your borrowed items</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <a href="/logout" class="btn btn-logout">
+                    🚪 Logout
+                </a>
+            </div>
+            
+            <div class="session-note">
+                <p><strong>Note:</strong> Your session will expire after 24 hours of inactivity.</p>
+                <p>Clicking logout will immediately end your current session.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
