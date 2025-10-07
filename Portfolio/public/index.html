@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freelance Portfolio – Contact</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Contact Me</h1>
+    <p>Have a project in mind? Send a message and I'll get back to you.</p>
+
+    <!-- Add method+action as a non-JS fallback -->
+    <form id="contactForm" novalidate method="post" action="/api/contact">
+      <div class="grid">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" required minlength="2" maxlength="100" />
+        </label>
+        <label>
+          <span>Your Email</span>
+          <input type="email" name="email" required />
+        </label>
+      </div>
+      <label>
+        <span>Subject</span>
+        <input type="text" name="subject" required minlength="3" maxlength="120" />
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows="6" required minlength="10" maxlength="5000"></textarea>
+      </label>
+
+      <button type="submit" id="submitBtn">Submit</button>
+      <p id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <!-- CSP-safe: no inline JS -->
+  <script src="/app.js" defer></script>
+</body>
+</html>
