@@ -1,0 +1,374 @@
+/* ================================
+   Tuition Admin – Beautiful UI
+   Works with your existing HTML
+   ================================ */
+
+/* Optional: modern font (with fallbacks) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root{
+  --bg: #0f1220;
+  --bg-2: #14182a;
+  --card: rgba(255,255,255,0.08);
+  --card-strong: rgba(255,255,255,0.12);
+  --text: #e8ecf3;
+  --muted: #a7b0c3;
+  --border: rgba(255,255,255,0.15);
+  --ring: #7aa2ff;
+  --primary: #7c4dff;    /* purple */
+  --primary-2: #4f46e5;  /* indigo */
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --glass: blur(10px) saturate(120%);
+}
+
+/* Light mode (automatic) */
+@media (prefers-color-scheme: light){
+  :root{
+    --bg: #f3f6fb;
+    --bg-2: #eef2fa;
+    --card: rgba(255,255,255,0.85);
+    --card-strong: rgba(255,255,255,0.95);
+    --text: #101626;
+    --muted: #52607c;
+    --border: rgba(16,22,38,0.08);
+    --ring: #4f46e5;
+    --shadow: 0 10px 30px rgba(16,22,38,0.08);
+  }
+}
+
+/* Base */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body{
+  margin: 0;
+  padding: clamp(16px, 2.2vw, 28px);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124,77,255,0.18), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(79,70,229,0.18), transparent 60%),
+    linear-gradient(180deg, var(--bg-2), var(--bg));
+}
+
+/* Headline */
+h1{
+  margin: 0 0 14px 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-size: clamp(22px, 3vw, 32px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+h1::after{
+  content: "";
+  display: block;
+  height: 6px;
+  width: 140px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  box-shadow: 0 6px 18px rgba(124,77,255,0.35);
+  margin-left: 8px;
+}
+
+/* Toolbar */
+.toolbar{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 10px 0 18px;
+}
+
+.muted{ color: var(--muted); }
+
+/* Inputs & controls */
+input, textarea, select, button{
+  font: inherit;
+  color: var(--text);
+}
+input::placeholder, textarea::placeholder{ color: color-mix(in oklab, var(--muted) 80%, transparent); }
+
+input, textarea, select{
+  width: 100%;
+  background: var(--card-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  outline: none;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .06s ease;
+}
+textarea{ min-height: 84px; resize: vertical; }
+
+input:focus, textarea:focus, select:focus{
+  border-color: color-mix(in oklab, var(--ring) 70%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring) 20%, transparent);
+}
+
+/* Buttons */
+button{
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--card-strong), rgba(255,255,255,0.05));
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  backdrop-filter: var(--glass);
+}
+button:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+}
+button:active{ transform: translateY(0); }
+
+.toolbar button:first-of-type{
+  background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 45%, transparent), color-mix(in oklab, var(--primary-2) 45%, transparent));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 8px 22px rgba(79,70,229,0.35);
+}
+.toolbar input{
+  flex: 1 1 420px;
+  min-width: 160px;
+}
+
+/* Form card */
+form#form{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(14px, 2.2vw, 22px);
+  margin: 0 0 18px 0;
+  animation: fadeInUp .45s ease both;
+}
+#formTitle{
+  margin: 2px 0 12px 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.row{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 12px;
+}
+
+form button[type="submit"]{
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 26px rgba(124,77,255,0.35);
+  margin-right: 8px;
+}
+form button[type="button"]{
+  background: transparent;
+  color: var(--muted);
+}
+
+/* Table container (make it scrollable on small screens) */
+table{
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: block;           /* enables overflow on small screens */
+  box-shadow: var(--shadow);
+}
+thead, tbody, tr{ display: table; width: 100%; table-layout: fixed; }
+tbody{ display: block; max-height: min(58vh, 640px); overflow-y: auto; }
+
+/* Sticky header */
+thead th{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+}
+
+th, td{
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: middle;
+}
+th{
+  background: linear-gradient(180deg, color-mix(in oklab, var(--card) 70%, transparent), transparent);
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: .02em;
+}
+
+/* Row hover & entry animation */
+tbody tr{
+  transition: background .18s ease, box-shadow .18s ease, transform .06s ease;
+  animation: rowIn .35s ease both;
+}
+tbody tr:hover{
+  background: color-mix(in oklab, var(--card-strong) 70%, transparent);
+}
+
+/* Badges */
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ok) 18%, var(--card));
+  color: color-mix(in oklab, #0f172a 22%, var(--text));
+  border: 1px solid color-mix(in oklab, var(--ok) 35%, var(--border));
+}
+.badge::before{
+  content: "";
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 999px;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ok) 28%, transparent);
+}
+/* If text says 'Unpaid', shift tone (no JS/HTML change needed) */
+td:has(.badge){ isolation: isolate; }
+td:has(.badge):has(:where(.badge):where(:not(:empty))) .badge{
+  /* heuristic via text-shadow contrast trick */
+  text-shadow: 0 0 transparent;
+}
+td:has(.badge)::after{
+  /* subtle underline accent */
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: .35;
+}
+@supports selector(:has(*)){
+  td:has(.badge:where(:not(:empty))):has(:where(.badge):where(:not(:has(:scope)))):has(:where(.badge):where(:nth-child(1))){
+    /* no-op; placeholder to keep :has supported engines in check */
+  }
+  /* crude text-check fallback: if badge width is wide (often 'Unpaid'), tint amber */
+  .badge:where(:not(:empty)){ max-width: 200px; }
+}
+
+/* Actions */
+.actions{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.actions button{
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card-strong);
+}
+.actions button:first-child{ /* Edit */
+  color: #ffffff;
+  background: blue;
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(14,165,233,0.25);
+}
+.actions button:last-child{ /* Delete */
+  color: #fff;
+  background: red;
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(239,68,68,0.25);
+}
+
+/* Pagination toolbar */
+.toolbar + table + .toolbar{
+  margin-top: 14px;
+  justify-content: center;
+}
+#pageInfo{
+  padding: 8px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+#prev, #next{
+  min-width: 92px;
+}
+#prev:disabled, #next:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* Email & meta in the first cell */
+td .muted{
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Subtle card lift on hover (table rows) */
+tbody tr:hover td:first-child strong{
+  text-decoration-color: color-mix(in oklab, var(--primary) 60%, transparent);
+  text-decoration-thickness: 2px;
+}
+
+/* Animations */
+@keyframes fadeInUp{
+  from{ opacity: 0; transform: translateY(8px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes rowIn{
+  from{ opacity: 0; transform: translateY(6px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar styling (WebKit) */
+tbody::-webkit-scrollbar{ height: 10px; width: 10px; }
+tbody::-webkit-scrollbar-thumb{
+  background: color-mix(in oklab, var(--primary) 25%, var(--card));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+tbody::-webkit-scrollbar-track{ background: transparent; }
+
+/* Responsive tweaks */
+@media (max-width: 640px){
+  .toolbar{
+    flex-wrap: wrap;
+  }
+  thead{ display: none; }
+  tbody, tr, td{ display: block; width: 100%; }
+  tr{ margin: 8px 0; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+  td{
+    border: none;
+    padding: 8px 0;
+  }
+  td::before{
+    content: attr(data-label);
+    display: none; /* keep clean; your columns already clear */
+  }
+}

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Tuition Admin – Students</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Students Admin</h1>
+  <div class="toolbar">
+    <input id="search" placeholder="Search name/email/phone/class/roll…" />
+    <button onclick="loadList(1)">Search</button>
+    <span class="muted" id="counter"></span>
+  </div>
+
+  <form id="form" onsubmit="return saveStudent(event)">
+    <h3 id="formTitle">Add Student</h3>
+    <input type="hidden" id="id"/>
+    <div class="row">
+      <input id="name" placeholder="Name *" required />
+      <input id="email" placeholder="Email"/>
+      <input id="phone" placeholder="Phone"/>
+      <input id="className" placeholder="Class (e.g., Grade 10-A)"/>
+      <input id="rollNo" placeholder="Roll No"/>
+      <select id="feesPaid">
+        <option value="false">Fees Not Paid</option>
+        <option value="true">Fees Paid</option>
+      </select>
+      <input id="dob" type="date" placeholder="DOB"/>
+    </div>
+    <textarea id="address" placeholder="Address"></textarea>
+    <div class="row">
+      <input id="guardianName" placeholder="Guardian Name"/>
+    </div>
+    <button type="submit">Save</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th><th>Class</th><th>Roll</th><th>Phone</th><th>Fees</th><th>Updated</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <div class="toolbar">
+    <button id="prev" onclick="prevPage()">Prev</button>
+    <span id="pageInfo" class="muted"></span>
+    <button id="next" onclick="nextPage()">Next</button>
+  </div>
+
+  <script>
+    const qs = (s)=>document.querySelector(s);
+    let page = 1, limit = 10, totalPages = 1;
+
+    async function loadList(p = 1) {
+      page = p;
+      const search = qs('#search').value.trim();
+      const res = await fetch(`/api/students?search=${encodeURIComponent(search)}&page=${page}&limit=${limit}`);
+      const json = await res.json();
+      totalPages = json.totalPages || 1;
+      qs('#counter').textContent = `${json.total} total • page ${json.page}/${json.totalPages}`;
+      qs('#pageInfo').textContent = `Page ${json.page} of ${json.totalPages}`;
+
+      const tbody = qs('#tbody');
+      tbody.innerHTML = json.data.map(s => `
+        <tr>
+          <td>
+            <strong>${escapeHtml(s.name || '')}</strong><br/>
+            <span class="muted">${escapeHtml(s.email || '')}</span>
+          </td>
+          <td>${escapeHtml(s.className || '')}</td>
+          <td>${escapeHtml(s.rollNo || '')}</td>
+          <td>${escapeHtml(s.phone || '')}</td>
+          <td><span class="badge">${s.feesPaid ? 'Paid' : 'Unpaid'}</span></td>
+          <td class="muted">${new Date(s.updatedAt).toLocaleString()}</td>
+          <td class="actions">
+            <button onclick='editRow(${JSON.stringify(s)})'>Edit</button>
+            <button onclick='delRow("${s._id}")'>Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      updatePager();
+    }
+
+    function updatePager(){
+      qs('#prev').disabled = page <= 1;
+      qs('#next').disabled = page >= totalPages;
+    }
+    function prevPage(){ if(page>1) loadList(page-1); }
+    function nextPage(){ if(page<totalPages) loadList(page+1); }
+
+    function resetForm(){
+      qs('#formTitle').textContent = 'Add Student';
+      ['id','name','email','phone','className','rollNo','address','guardianName','dob'].forEach(id=>qs('#'+id).value='');
+      qs('#feesPaid').value = 'false';
+    }
+
+    function editRow(s){
+      qs('#formTitle').textContent = 'Edit Student';
+      qs('#id').value = s._id || '';
+      qs('#name').value = s.name || '';
+      qs('#email').value = s.email || '';
+      qs('#phone').value = s.phone || '';
+      qs('#className').value = s.className || '';
+      qs('#rollNo').value = s.rollNo || '';
+      qs('#feesPaid').value = String(Boolean(s.feesPaid));
+      qs('#dob').value = s.dob ? new Date(s.dob).toISOString().slice(0,10) : '';
+      qs('#address').value = s.address || '';
+      qs('#guardianName').value = s.guardianName || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function delRow(id){
+      if(!confirm('Delete this student?')) return;
+      const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+      if(res.ok){ loadList(page); } else { alert('Delete failed'); }
+    }
+
+    async function saveStudent(e){
+      e.preventDefault();
+      const payload = {
+        name: qs('#name').value.trim(),
+        email: qs('#email').value.trim() || undefined,
+        phone: qs('#phone').value.trim() || undefined,
+        className: qs('#className').value.trim() || undefined,
+        rollNo: qs('#rollNo').value.trim() || undefined,
+        feesPaid: qs('#feesPaid').value === 'true',
+        dob: qs('#dob').value ? new Date(qs('#dob').value).toISOString() : undefined,
+        address: qs('#address').value.trim() || undefined,
+        guardianName: qs('#guardianName').value.trim() || undefined,
+      };
+      if(!payload.name) return alert('Name is required');
+
+      const id = qs('#id').value;
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/students/${id}` : '/api/students';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if(res.ok){
+        resetForm();
+        loadList(1);
+      } else {
+        const err = await res.json().catch(()=>({error:'Unknown error'}));
+        alert('Save failed: ' + (err.error || res.statusText));
+      }
+    }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    loadList(1);
+  </script>
+</body>
+</html>
