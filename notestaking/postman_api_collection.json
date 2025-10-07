@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "Notes API",
+    "_postman_id": "d6b5f8b3-3f1e-4a6c-9b3d-aaaaaaaaaaaa",
+    "description": "CRUD Notes API (Express + MongoDB)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "noteId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+      }
+    },
+    {
+      "name": "Create note",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.expect(body).to.have.property('_id');",
+              "pm.collectionVariables.set('noteId', body._id);",
+              "console.log('Saved noteId:', body._id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"First note\",\n  \"content\": \"Hello world from Postman\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/notes", "host": ["{{baseUrl}}"], "path": ["api", "notes"] }
+      }
+    },
+    {
+      "name": "List notes (page, limit, q)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/notes?page=1&limit=5&q=hello",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "notes"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "5" },
+            { "key": "q", "value": "hello" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Read note by ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "if (!pm.collectionVariables.get('noteId')) {",
+              "  throw new Error('noteId is empty. Run \"Create note\" first.');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "notes", "{{noteId}}"]
+        }
+      }
+    },
+    {
+      "name": "Update note (PATCH)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "if (!pm.collectionVariables.get('noteId')) {",
+              "  throw new Error('noteId is empty. Run \"Create note\" first.');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Content updated\", () => {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.content).to.include('Updated');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"content\": \"Updated content via PATCH\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "notes", "{{noteId}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete note",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "if (!pm.collectionVariables.get('noteId')) {",
+              "  throw new Error('noteId is empty. Run \"Create note\" first.');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 204\", () => pm.response.to.have.status(204));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/notes/{{noteId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "notes", "{{noteId}}"]
+        }
+      }
+    }
+  ]
+}
